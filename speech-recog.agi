@@ -46,6 +46,9 @@
 #	$pro_filter ('false':disable, 'true': remove profanities)
 #
 
+# For SSL connection, perl packages perl-LWP-Protocol-https perl-Crypt-SSLeay must be installed.
+# without these packages, you get an error saying that the hostname cannot be checked.
+
 use warnings;
 use strict;
 use File::Copy qw(move);
@@ -224,6 +227,10 @@ my $uaresponse = $ua->post(
 	Content_Type => "application/json",
 	Content      => encode_json(\%json),
 );
+
+# printing the response code and the response message help a lot when the code is not working. 
+# it can help detecting missing perl packages.
+print "VERBOSE \"Response code " . $uaresponse->code . " (" . $uaresponse->message . ")\" \n";
 
 warn "$name The response was:\n", $uaresponse->content if ($debug);
 if (!$uaresponse->is_success) {
